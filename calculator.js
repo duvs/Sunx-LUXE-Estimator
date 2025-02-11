@@ -3,7 +3,7 @@ function PergolaCalculator() {
     const [screenResult, setScreenResult] = React.useState('');
     const [screenHeight, setScreenHeight] = React.useState('6 ft 7 inch');
     const [screenWidth, setScreenWidth] = React.useState('4 ft 11 inch');
-
+ 
     // Pergola calculator state
     const [formData, setFormData] = React.useState({
         design: 'D1',
@@ -20,15 +20,68 @@ function PergolaCalculator() {
     });
     
     const [result, setResult] = React.useState('');
-
+    const [pergolaPrice, setPergolaPrice] = React.useState(null);
+    const [screenPrice, setScreenPrice] = React.useState(null);
+    const [totalPricePerSqFt, setTotalPricePerSqFt] = React.useState(null);
+    const [totalSquareFeet, setTotalSquareFeet] = React.useState(null);
+ 
+    const handlePrint = () => {
+        const printWindow = window.open('', '_blank');
+        const pergolaData = {
+            ...formData,
+            price: pergolaPrice
+        };
+        
+        const screenData = screenPrice ? {
+            height: screenHeight,
+            width: screenWidth,
+            linearFeet: document.getElementById("linearFeet").value,
+            screenCount: document.getElementById("screenCount").value,
+            price: screenPrice,
+            pricePerSqFt: totalPricePerSqFt,
+            totalSqFt: totalSquareFeet,
+            totalLinearFeet: document.getElementById("linearFeet").value
+        } : {
+            height: "No screen selected",
+            width: "N/A",
+            linearFeet: "N/A",
+            screenCount: "N/A",
+            price: "0.00"
+        };
+ 
+        const totalProjectCost = (parseFloat(pergolaData.price) + parseFloat(screenData.price)).toFixed(2);
+        
+        ReactDOM.render(
+            <PrintableOrder 
+                pergolaData={pergolaData} 
+                screenData={screenData}
+                totalProjectCost={totalProjectCost}
+            />, 
+            printWindow.document.body
+        );
+        printWindow.document.head.innerHTML = document.head.innerHTML;
+        printWindow.print();
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name === 'design') {
+            // Set initial values based on design type
+            let initialLength, initialProjection;
+            
+            if (value === 'D2') {
+                initialLength = "19.67";  // First valid length for D2
+                initialProjection = "22.11";  // First valid projection for D2
+            } else {
+                initialLength = lengthOptions[value][0].value;
+                initialProjection = projectionOptions[0].value;
+            }
+            
+            
             setFormData(prev => ({
                 ...prev,
                 design: value,
-                length: lengthOptions[value][0].value,
-                projection: projectionOptions[0].value
+                length: initialLength,
+                projection: initialProjection
             }));
         } else {
             setFormData(prev => ({
@@ -37,9 +90,36 @@ function PergolaCalculator() {
             }));
         }
     };
+    const getProjectionOptions = () => {
+        if (formData.design === 'D2') {
+            return projectionOptions.filter(option => 
+                ['22.11', '21.4', '19.8', '18.0', '16.42', '14.8', '13.1', '11.5', '9.84', '8.2'].includes(option.value)
+            );
+        }
+        return projectionOptions;
+    };
+    
     
     const calculatePrice = () => {
-        const priceKey = `${formData.design}-${formData.length}-${formData.projection}`;
+        let priceKey;
+
+         // 🔍 Debugging: Check if formData has correct values before generating key
+    console.log("🔎 Debugging formData before price calculation:");
+    console.log("Design:", formData.design);
+    console.log("Length:", formData.length);
+    console.log("Projection:", formData.projection);
+
+        if (formData.design === 'D2') {
+            // For D2, we need to format the key with the correct decimal places
+            const length = formData.length; // This will be from D2_projectionOptions
+            const projection = formData.projection;
+            priceKey = `${formData.design}-${length}-${projection}`;
+        } else {
+            // For D1 and D3, keep the existing format
+            priceKey = `${formData.design}-${formData.length}-${formData.projection}`;
+        }
+        
+        console.log("Trying to calculate price for:", priceKey);
         let totalPrice = priceChart[priceKey];
         
         if (!totalPrice) {
@@ -82,6 +162,7 @@ function PergolaCalculator() {
         totalPrice += footingPricePerColumn * numberOfColumns;
         
         setResult(`Estimated Price: $${totalPrice.toFixed(2)}`);
+        setPergolaPrice(totalPrice.toFixed(2));
     };
 
     const calculateScreenPrice = () => {
@@ -90,19 +171,52 @@ function PergolaCalculator() {
                 setScreenResult("Please contact us for pricing on screens over 10 ft in height");
                 return;
             }
-
-            const price = window.screenPrices[screenHeight][screenWidth];
-            if (price) {
-                setScreenResult("Screen Price: $" + price.toFixed(2) + " (" + screenHeight + " x " + screenWidth + ")");
-            } else {
+    
+            const basePrice = window.screenPrices && window.screenPrices[screenHeight] && window.screenPrices[screenHeight][screenWidth];
+    
+            if (!basePrice) {
                 setScreenResult("Please select valid dimensions for pricing");
+                return;
             }
+    
+            // Convert dimensions
+            const heightFeet = parseFloat(screenHeight.split(" ")[0]);
+            const widthFeet = parseFloat(screenWidth.split(" ")[0]);
+    
+            if (isNaN(heightFeet) || isNaN(widthFeet)) {
+                setScreenResult("Invalid screen dimensions");
+                return;
+            }
+    
+            // 1️⃣ Calculate total square footage
+            const totalSqFt = heightFeet * widthFeet;
+            setTotalSquareFeet(totalSqFt);
+    
+            // 2️⃣ Calculate base cost per sq ft
+            const baseCostPerSqFt = basePrice / totalSqFt;
+    
+            // 3️⃣ Adjust cost per sq ft with 2.75 multiplier
+            const officialPricePerSqFt = baseCostPerSqFt * 2.75;
+            setTotalPricePerSqFt(officialPricePerSqFt.toFixed(2));
+    
+            // 4️⃣ Compute total price before linear feet
+            const totalPriceBeforeLinearFeet = officialPricePerSqFt * totalSqFt;
+    
+            // 5️⃣ Compute price per linear foot
+            const finalPricePerLinearFoot = totalPriceBeforeLinearFeet / widthFeet;
+    
+            // Get user's linear feet selection and calculate final price
+            const linearFeet = parseFloat(document.getElementById("linearFeet").value) || 0;
+            const finalPrice = finalPricePerLinearFoot * linearFeet;
+            
+            setScreenPrice(finalPrice.toFixed(2));
+            setScreenResult(`Total Screen Price: $${finalPrice.toFixed(2)}`);
+            
         } catch (error) {
             console.error("Error calculating screen price:", error);
             setScreenResult("Error calculating price. Please try again.");
         }
-    };
-
+    };   
     return (
         <div className="max-w-4xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-6">LUX Pergola Calculator</h1>
@@ -159,22 +273,21 @@ function PergolaCalculator() {
                         ))}
                     </select>
                 </div>
-
                 <div className="mb-4">
-                    <label className="block mb-2">Projection:</label>
-                    <select
-                        name="projection"
-                        value={formData.projection}
-                        onChange={handleInputChange}
-                        className="w-full p-2 border rounded"
-                    >
-                        {projectionOptions.map(option => (
-                            <option key={option.value} value={option.value}>
-                                {option.text}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+    <label className="block mb-2">Projection:</label>
+    <select
+        name="projection"
+        value={formData.projection}
+        onChange={handleInputChange}
+        className="w-full p-2 border rounded"
+    >
+        {projectionOptions.map(option => (
+            <option key={option.value} value={option.value}>
+                {option.text}
+            </option>
+        ))}
+    </select>
+</div>
 
                 <div className="mb-4">
                     <label className="block mb-2">Height:</label>
@@ -314,6 +427,20 @@ function PergolaCalculator() {
                     </div>
                 )}
 
+{result && (
+    <div className="mt-4 mb-8">
+        <div className="p-4 bg-white rounded border">
+            {result}
+        </div>
+        <button
+            onClick={handlePrint}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+            Print Order
+        </button>
+    </div>
+)}
+
                 {/* Motorized Screen Section */}
                 <div className="mt-8 p-4 bg-gray-50 rounded-lg border">
                     <h2 className="text-xl font-bold mb-4">Motorized Screen Calculator</h2>
@@ -350,6 +477,25 @@ function PergolaCalculator() {
                             <option value="19 ft 8 inch">19 ft 8 inch</option>
                         </select>
                     </div>
+                    <div className="mb-4">
+    <label className="block mb-2">Enter Linear Feet:</label>
+    <input
+        type="number"
+        id="linearFeet"
+        className="w-full p-2 border rounded"
+        placeholder="Enter Linear Feet"
+    />
+</div>
+
+<div className="mb-4">
+    <label className="block mb-2">Number of Screens:</label>
+    <input
+        type="number"
+        id="screenCount"
+        className="w-full p-2 border rounded"
+        placeholder="Number of Screens"
+    />
+</div>
 
                     <button
                         onClick={calculateScreenPrice}
@@ -379,3 +525,80 @@ function PergolaCalculator() {
 }
 
 ReactDOM.render(<PergolaCalculator />, document.getElementById('root'));
+const PrintableOrder = ({ pergolaData, screenData }) => (
+  <div className="max-w-3xl mx-auto p-8 bg-white">
+    <div className="text-center mb-8">
+      <h1 className="text-3xl font-bold mb-4">Lux Distributor Order</h1>
+      <p className="mb-2">Date: {new Date().toLocaleDateString()}</p>
+      <p>Order Reference: SO-{Math.random().toString(36).substring(2, 10).toUpperCase()}</p>
+    </div>
+
+    <div className="border rounded-lg p-6 mb-8">
+      <h2 className="text-2xl font-bold mb-4">Pergola Configuration</h2>
+      <div className="grid grid-cols-2 gap-4">
+        <div>Model:</div>
+        <div>{pergolaData.design}</div>
+        <div>Length:</div>
+        <div>{pergolaData.length.replace('-', ' ')} ft inch</div>
+        <div>Projection:</div>
+        <div>{pergolaData.projection.replace('-', ' ')} ft inch</div>
+        <div>Height:</div>
+        <div>Standard Height: 2.7 M max height</div>
+        <div>Color:</div>
+        <div>{pergolaData.color === 'RAL7016' ? 'RAL7016 Arctic Dark Grey' : pergolaData.color}</div>
+        <div>Mounting Type:</div>
+        <div>{pergolaData.mounting === 'freestanding' ? 'Freestanding' : 'Wall Mounted'}</div>
+        <div>LED Lights:</div>
+        <div>{pergolaData.ledPerimeter === 'yes' ? 'Yes' : 'No'}</div>
+        <div>Electric Heaters:</div>
+        <div>{pergolaData.heaters}</div>
+        <div>Fan Beams:</div>
+        <div>{pergolaData.fans}</div>
+        <div>Permit Required:</div>
+        <div>{pergolaData.permitRequired === 'yes' ? 'Yes' : 'No'}</div>
+        <div>Concrete Footers:</div>
+        <div>{pergolaData.columns}</div>
+      </div>
+      <div className="mt-6 text-right text-xl text-green-600 font-bold">
+        Estimated Price: ${pergolaData.price}
+      </div>
+    </div>
+
+    <div className="border rounded-lg p-6">
+      <h2 className="text-2xl font-bold mb-4">Motorized Screen Configuration</h2>
+      <div className="grid grid-cols-2 gap-4">
+        <div>Screen Height:</div>
+        <div>{screenData.height}</div>
+        <div>Screen Width:</div>
+        <div>{screenData.width}</div>
+        <div>Linear Feet:</div>
+        <div>{screenData.linearFeet}</div>
+        <div>Number of Screens:</div>
+        <div>{screenData.screenCount}</div>
+      </div>
+      {screenData.height !== "No screen selected" && (
+        <div className="mt-6 text-green-600">
+          <div>Price per Square Foot: ${screenData.pricePerSqFt}</div>
+          <div>Total Square Feet: {screenData.totalSqFt}</div>
+          <div>Total Linear Feet: {screenData.linearFeet}</div>
+          <div className="font-bold">Total Price: ${screenData.price}</div>
+        </div>
+      )}
+      {screenData.height === "No screen selected" && (
+        <div className="mt-6 text-right text-xl text-green-600 font-bold">
+          Screen Price: $0.00
+        </div>
+      )}
+    </div>
+
+    <div className="mt-6 p-4 bg-green-50 rounded">
+      <div className="text-xl text-green-600 font-bold text-center">
+        Total Project Cost: ${(parseFloat(pergolaData.price) + parseFloat(screenData.price)).toFixed(2)}
+      </div>
+    </div>
+
+    <div className="mt-8 text-sm text-gray-600">
+      This is a computer-generated document. For questions or support, please contact your local Solara representative.
+    </div>
+  </div>
+);
