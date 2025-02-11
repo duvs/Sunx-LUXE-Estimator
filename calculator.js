@@ -219,7 +219,7 @@ function PergolaCalculator() {
     };   
     return (
         <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">LUX Pergola Calculator</h1>
+           <h1 className="text-2xl font-bold mb-6">LUX Distributor Prices</h1>
             
             <div className="bg-gray-50 p-6 rounded-lg shadow">
                 <div className="mb-4">
