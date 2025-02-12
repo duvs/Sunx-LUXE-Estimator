@@ -219,7 +219,7 @@ function PergolaCalculator() {
     };   
     return (
         <div className="max-w-4xl mx-auto p-6">
-           <h1 className="text-2xl font-bold mb-6">LUX Distributor Prices</h1>
+           <h1 className="text-2xl font-bold mb-6">LUX PRICES</h1>
             
             <div className="bg-gray-50 p-6 rounded-lg shadow">
                 <div className="mb-4">
@@ -528,7 +528,7 @@ ReactDOM.render(<PergolaCalculator />, document.getElementById('root'));
 const PrintableOrder = ({ pergolaData, screenData }) => (
   <div className="max-w-3xl mx-auto p-8 bg-white">
     <div className="text-center mb-8">
-      <h1 className="text-3xl font-bold mb-4">Lux Distributor Order</h1>
+      <h1 className="text-3xl font-bold mb-4">LUX Order</h1>
       <p className="mb-2">Date: {new Date().toLocaleDateString()}</p>
       <p>Order Reference: SO-{Math.random().toString(36).substring(2, 10).toUpperCase()}</p>
     </div>
@@ -598,7 +598,7 @@ const PrintableOrder = ({ pergolaData, screenData }) => (
     </div>
 
     <div className="mt-8 text-sm text-gray-600">
-      This is a computer-generated document. For questions or support, please contact your local Solara representative.
+      This is a computer-generated document. For questions or support, please contact your local LUX representative.
     </div>
   </div>
 );
