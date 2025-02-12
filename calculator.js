@@ -369,9 +369,9 @@ function PergolaCalculator() {
                 <div className="mb-4">
                     <label className="block mb-2">Installation Fee:</label>
                     <div className="p-2 border rounded bg-gray-50">
-                        {formData.design === 'D1' && "$1,500"}
-                        {formData.design === 'D2' && "$2,500"}
-                        {formData.design === 'D3' && "$3,500"}
+                        {formData.design === 'D1' && "$0"}
+                        {formData.design === 'D2' && "$0"}
+                        {formData.design === 'D3' && "$0"}
                     </div>
                 </div>
 
