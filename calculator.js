@@ -147,9 +147,9 @@ function PergolaCalculator() {
         totalPrice += parseInt(formData.fans || 0) * 209;
     
         // Add Installation Fee
-        if(formData.design === 'D1') totalPrice += 1500;
-        if(formData.design === 'D2') totalPrice += 2500;
-        if(formData.design === 'D3') totalPrice += 3500;
+        if(formData.design === 'D1') totalPrice += 0;
+        if(formData.design === 'D2') totalPrice += 0;
+        if(formData.design === 'D3') totalPrice += 0;
     
         // Add Permit Fee
         if(formData.permitRequired === 'yes') {
