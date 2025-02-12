@@ -147,9 +147,9 @@ function PergolaCalculator() {
         totalPrice += parseInt(formData.fans || 0) * 209;
     
         // Add Installation Fee
-        if(formData.design === 'D1') totalPrice += 0;
-        if(formData.design === 'D2') totalPrice += 0;
-        if(formData.design === 'D3') totalPrice += 0;
+        if(formData.design === 'D1') totalPrice += 1500;
+        if(formData.design === 'D2') totalPrice += 2500;
+        if(formData.design === 'D3') totalPrice += 3500;
     
         // Add Permit Fee
         if(formData.permitRequired === 'yes') {
@@ -369,9 +369,9 @@ function PergolaCalculator() {
                 <div className="mb-4">
                     <label className="block mb-2">Installation Fee:</label>
                     <div className="p-2 border rounded bg-gray-50">
-                        {formData.design === 'D1' && "$0"}
-                        {formData.design === 'D2' && "$0"}
-                        {formData.design === 'D3' && "$0"}
+                        {formData.design === 'D1' && "$1500"}
+                        {formData.design === 'D2' && "$2500"}
+                        {formData.design === 'D3' && "$3500"}
                     </div>
                 </div>
 
