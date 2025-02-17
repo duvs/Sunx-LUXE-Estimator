@@ -1,17 +1,153 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Pergola Calculator</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <div id="root"></div>
-    <script src="priceData.js"></script>
-    <script type="text/babel" src="calculator.js"></script>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pergola LUX Calculator</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Pergola Price Calculator</h1>
+    </header>
+    <main>
+      <div class="calculator">
+        <div class="pergolaCalculatorDiv">
+          <label for="pergolaDesign">Design:</label>
+          <select id="pergolaDesign">
+            <option value="D1">D1: With 4 Posts</option>
+            <option value="D2">
+              D2: With 4 Posts with Middle Beam & Gutter
+            </option>
+            <option value="D3">
+              D3: With 8 Post Two pieces Connect together
+            </option>
+          </select>
+
+          <label for="pergolaLength">Length:</label>
+          <select id="pergolaLength">
+            <option value="8.2">8 ft 2 inch</option>
+            <option value="9.84">9 ft 10 in</option>
+            <option value="11.5">11 ft 6 in</option>
+            <option value="13.1">13 ft 1 in</option>
+            <option value="14.8">14 ft 9 in</option>
+          </select>
+
+          <label for="pergolaProjection">Projection:</label>
+          <select id="pergolaProjection">
+            <option value="22.11">22 ft 11 in</option>
+            <option value="21.4">21 ft 4 in</option>
+            <option value="19.8">19 ft 8 in</option>
+            <option value="18.0">18 ft 0 in</option>
+            <option value="16.42">16 ft 5 in</option>
+            <option value="14.8">14 ft 9 in</option>
+            <option value="13.1">13 ft 1 in</option>
+            <option value="11.5">11 ft 6 in</option>
+            <option value="9.84">9 ft 10 in</option>
+            <option value="8.2">8 ft 2 inch</option>
+          </select>
+
+          <label for="pergolaHeight">Height:</label>
+          <select id="pergolaHeight">
+            <option value="standard">Standard</option>
+            <option value="custom">Custom (Requires Approval)</option>
+          </select>
+
+          <label for="pergolaColor">Color:</label>
+          <select id="pergolaColor">
+            <option value="RAL7016">RAL7016 Artic Dark Grey</option>
+            <option value="RAL9016">RAL 9016 Traffic White</option>
+            <option value="custom">Custom Color (Call for Pricing)</option>
+          </select>
+
+          <label for="pergolaMounting">Mounting Type:</label>
+          <select id="pergolaMounting">
+            <option value="freestanding">Freestanding</option>
+            <option value="wall">Wall Mounted</option>
+          </select>
+
+          <label for="pergolaLedPerimeter">LED Perimeter:</label>
+          <select id="pergolaLedPerimeter">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+
+          <label for="pergolaHeaters">Electric Heaters:</label>
+          <input type="number" id="pergolaHeaters" value="0" min="0" />
+
+          <label for="pergolaFans">Fan Beams:</label>
+          <input type="number" id="pergolaFans" value="0" min="0" />
+
+          <label for="pergolaInstallationFee">Installation Fee:</label>
+          <input
+            type="text"
+            id="pergolaInstallationFee"
+            value="$1,500"
+            readonly
+          />
+
+          <label for="pergolaPermitRequired">Permit Requirements:</label>
+          <select id="pergolaPermitRequired">
+            <option value="no">No - Standard Installation ($400/column)</option>
+            <option value="yes">Yes - Permit Required ($800/column)</option>
+          </select>
+          <input
+            type="text"
+            id="pergolaPermitFee"
+            value="Permit & Engineering Fee: $0.00"
+            readonly
+          />
+
+          <label for="pergolaColumns">Number of Columns:</label>
+          <input type="number" id="pergolaColumns" value="4" min="1" max="16" />
+
+          <button id="calculatePergolaBtn">Calculate Pergola Price</button>
+
+          <div id="pergolaResult" class="result" style="display: none">
+            <p id="pergolaResultText"></p>
+          </div>
+        </div>
+
+        <div class="motorizedScreenDiv">
+          <h2>Motorized Screen Price Calculator</h2>
+
+          <label for="screenHeight">Screen Height:</label>
+          <select id="screenHeight">
+            <option value="6 ft 7 inch">6 ft 7 inch</option>
+            <option value="8 ft 2 inch">8 ft 2 inch</option>
+            <option value="9 ft 10 inch">9 ft 10 inch</option>
+            <option value="10+ Ft ask pricing">
+              10+ Ft (Call for Pricing)
+            </option>
+          </select>
+
+          <label for="screenWidth">Screen Width:</label>
+          <select id="screenWidth">
+            <option value="4 ft 11 inch">4 ft 11 inch</option>
+            <option value="6 ft 7 inch">6 ft 7 inch</option>
+            <option value="8 ft 2 inch">8 ft 2 inch</option>
+            <option value="9 ft 10 inch">9 ft 10 inch</option>
+            <option value="11 ft 5 inch">11 ft 5 inch</option>
+            <option value="13 ft 1 inch">13 ft 1 inch</option>
+            <option value="14 ft 9 inch">14 ft 9 inch</option>
+            <option value="16 ft 4 inch">16 ft 4 inch</option>
+            <option value="19 ft 8 inch">19 ft 8 inch</option>
+          </select>
+
+          <button id="calculateScreenBtn">Calculate Screen Price</button>
+
+          <div id="screenResult" class="result" style="display: none">
+            <p id="screenResultText"></p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>
+        &copy; 2025. Originally created by Alex Collier. Enhanced & maintained
+        by Duvan Mendoza.
+      </p>
+    </footer>
+    <script src="js/index.js" type="module"></script>
+  </body>
 </html>
