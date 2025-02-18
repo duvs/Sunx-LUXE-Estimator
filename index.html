@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pergola LUXE Calculator</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/calculator.css">
   </head>
   <body>
     <header>
+      <img src="img/logo-sunx.png" alt="Logo SunX" />
       <h1>Pergola LUXE Price Calculator</h1>
     </header>
     <main>
@@ -131,18 +133,16 @@
           <div class="customerInfo">
             <form id="clientForm">
               <label for="clientNameInput">Full Name:</label>
-              <input type="text" id="clientNameInput" required />
+              <input type="text" id="clientNameInput" placeholder="Enter a Full Name" required />
             
               <label for="clientAddressInput">Address:</label>
-              <input type="text" id="clientAddressInput" required />
+              <input type="text" id="clientAddressInput" placeholder="Enter an Address" required />
             
               <label for="clientPhoneInput">Phone:</label>
-              <input type="tel" id="clientPhoneInput" required />
+              <input type="tel" id="clientPhoneInput" placeholder="Enter a Phone Number" required />
             
               <label for="clientEmailInput">Email:</label>
-              <input type="email" id="clientEmailInput" required />
-            
-              <p id="error-message" style="color: red; display: none;">Please fill out all required fields.</p>
+              <input type="email" id="clientEmailInput" placeholder="Enter an Email" required />
             
               <button type="submit" id="generateEstimateBtn">Generate Estimate</button>
               <button type="reset">Clear</button>
@@ -188,8 +188,8 @@
     </main>
     <footer>
       <p>
-        &copy; 2025. Originally created by Alex Collier. Enhanced & maintained
-        by Duvan Mendoza.
+        &copy; 2025. Originally created by Sunx. Enhanced & maintained
+        by WittyLab.
       </p>
     </footer>
     <script src="js/index.js" type="module"></script>

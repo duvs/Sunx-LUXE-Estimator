@@ -1,69 +1,37 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-  background-color: #f4f4f4;
-  color: #333;
-}
-
-/* Header */
-header {
-  text-align: center;
-  background-color: #007bff;
-  color: white;
-  padding: 15px;
-  font-size: 24px;
-}
-
-/* Sections */
 section {
-  background: white;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 800px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
 }
 
-/* Client Info */
-.client-info,
-.estimate-details,
-.contract,
-.signatures {
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-}
-
-/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
 }
 
-table,
-th,
-td {
+table th,
+table td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 12px;
   text-align: left;
 }
 
-th {
+table th {
   background-color: #007bff;
   color: white;
+}
+
+table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
 /* Signature Section */
 .signatures {
   text-align: center;
+  padding: 20px;
 }
 
 .signature-box {
-  width: 250px;
+  width: 300px;
   height: 50px;
   border-top: 2px solid black;
   margin: 20px auto;
