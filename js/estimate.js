@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // Asignar valores si los elementos existen en el DOM
   const setTextContent = (selector, value) => {
     const element = document.querySelector(selector);
     if (element) element.textContent = value || "N/A";
@@ -22,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
   setTextContent("#totalPrice", `$${estimateData.totalPrice.toFixed(2)}`);
   setTextContent("#estimateDate", new Date().toLocaleDateString());
 
-  // Llenar la descripción con lista <ul>
   const descriptionElement = document.querySelector("#description");
   if (descriptionElement) {
     descriptionElement.innerHTML = `
@@ -55,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
-  // Descargar PDF
   const downloadButton = document.querySelector("#downloadPdfBtn");
   if (downloadButton) {
     downloadButton.addEventListener("click", function () {
@@ -68,18 +65,18 @@ document.addEventListener("DOMContentLoaded", function () {
       html2pdf()
         .from(element)
         .set({
-          margin: [10, 10, 10, 10],
-          filename: "Pergola_Estimate.pdf",
+          margin: 10,
           image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "portrait",
+          html2canvas: {
+            scale: 2,
+            dpi: 300,
+            letterRendering: true,
+            useCORS: true,
+            logging: false,
           },
-          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
         })
-        .save();
+        .save("Pergola_Estimate.pdf");
     });
   }
 });

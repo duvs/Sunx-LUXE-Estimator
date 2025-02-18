@@ -17,6 +17,14 @@ section {
   margin-bottom: 20px;
 }
 
+.estimate img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+  page-break-inside: avoid;
+}
+
 hr {
   display: block;
   height: 1px;
