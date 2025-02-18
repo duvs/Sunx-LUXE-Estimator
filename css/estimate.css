@@ -29,17 +29,21 @@ table {
 table th,
 table td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 10px;
+  vertical-align: top;
   text-align: left;
 }
 
-table th {
-  background-color: #007bff;
-  color: white;
+td ul {
+  margin: 0;
+  padding-left: 15px;
 }
 
-table tr:nth-child(even) {
-  background-color: #f8f8f8;
+#totalPriceContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5px;
 }
 
 /* Signature Section */
