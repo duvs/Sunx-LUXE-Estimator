@@ -153,7 +153,7 @@ function calculatePergolaPrice() {
 
   document.querySelector("#pergolaResult").style.display = "block";
 
-  return totalPrice.toFixed(2);
+  return totalPrice;
 }
 
 document

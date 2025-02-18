@@ -1,3 +1,8 @@
+.estimate {
+  padding: 20px;
+  margin: 20px;
+}
+
 section {
   margin: 30px 0;
 }
@@ -55,8 +60,12 @@ td ul {
   margin: 10px;
 }
 
-/* Signature Section */
+.contract p {
+  page-break-inside: avoid;
+}
+
 .signatures {
+  page-break-before: always;
   text-align: center;
   padding: 20px;
 }
