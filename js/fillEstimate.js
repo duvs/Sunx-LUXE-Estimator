@@ -38,17 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
     estimateData.pergolaColumns;
 
   document.querySelector(
-    "#summaryBasePrice"
-  ).textContent = `$${estimateData.basePrice.toFixed(2)}`;
-  document.querySelector(
-    "#summaryInstallation"
-  ).textContent = `$${estimateData.installationFee.toFixed(2)}`;
-  document.querySelector(
-    "#summaryPermitFee"
-  ).textContent = `$${estimateData.permitFee.toFixed(2)}`;
-  document.querySelector(
     "#summaryTotal"
-  ).textContent = `$${estimateData.totalPrice.toFixed(2)}`;
+  ).textContent = `$${estimateData.totalPrice}`;
 
   document.querySelector("#estimateDate").textContent =
     new Date().toLocaleDateString();
