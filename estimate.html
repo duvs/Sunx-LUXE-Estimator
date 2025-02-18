@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pergola Estimate</title>
+    <link rel="stylesheet" href="css/estimate.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Pergola Estimate</h1>
+    </header>
+    <main>
+      <section class="client-info">
+        <h2>Client Information</h2>
+        <p><strong>Name:</strong> <span id="clientName"></span></p>
+        <p><strong>Address:</strong> <span id="clientAddress"></span></p>
+        <p><strong>Phone:</strong> <span id="clientPhone"></span></p>
+        <p><strong>Email:</strong> <span id="clientEmail"></span></p>
+      </section>
+
+      <section class="estimate-details">
+        <h2>Estimate Details</h2>
+        <table>
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>Design</td>
+            <td id="summaryDesign"></td>
+          </tr>
+          <tr>
+            <td>Length</td>
+            <td id="summaryLength"></td>
+          </tr>
+          <tr>
+            <td>Projection</td>
+            <td id="summaryProjection"></td>
+          </tr>
+          <tr>
+            <td>Height</td>
+            <td id="summaryHeight"></td>
+          </tr>
+          <tr>
+            <td>Color</td>
+            <td id="summaryColor"></td>
+          </tr>
+          <tr>
+            <td>Mounting</td>
+            <td id="summaryMounting"></td>
+          </tr>
+          <tr>
+            <td>LED Perimeter</td>
+            <td id="summaryLed"></td>
+          </tr>
+          <tr>
+            <td>Electric Heaters</td>
+            <td id="summaryHeaters"></td>
+          </tr>
+          <tr>
+            <td>Fans</td>
+            <td id="summaryFans"></td>
+          </tr>
+          <tr>
+            <td>Permit Required</td>
+            <td id="summaryPermit"></td>
+          </tr>
+          <tr>
+            <td>Number of Columns</td>
+            <td id="summaryColumns"></td>
+          </tr>
+          <tr>
+            <td><strong>Total Price</strong></td>
+            <td id="summaryTotal"></td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="contract">
+        <h2>Contract Agreement</h2>
+        <p>
+          <strong>1. Agreement Overview</strong><br />
+          This Agreement is made between the Parties and may only be modified as
+          specified herein...
+        </p>
+
+        <p>
+          <strong>2. Payment Terms</strong><br />
+          30% Deposit upon contract execution.<br />
+          40%: (20% upon permit approval, 20% upon material delivery).<br />
+          20% Upon pergola final completion.<br />
+          10% Upon permit closure.
+        </p>
+
+        <p>
+          <strong>6. Warranty and Disclaimer</strong><br />
+          The SunXco pergola system is engineered to withstand various weather
+          conditions...
+        </p>
+      </section>
+
+      <section class="signatures">
+        <h2>Signatures</h2>
+        <div class="signature-box">Owner Signature</div>
+        <p>Print Name: <span id="clientNameSignature"></span></p>
+        <div class="signature-box">Epic Landscaping Inc. Representative</div>
+        <p>Print Name: ___________________________</p>
+        <p>Date: ___________________________</p>
+      </section>
+    </main>
+    <script src="js/fillEstimate.js"></script>
+  </body>
+</html>
