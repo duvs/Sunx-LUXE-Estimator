@@ -150,6 +150,8 @@ function calculatePergolaPrice() {
   ${adjustments.join("<br>")}`;
 
   document.querySelector("#pergolaResult").style.display = "block";
+
+  return totalPrice.toFixed(2);
 }
 
 document
@@ -185,3 +187,165 @@ function calculateScreenPrice() {
 document
   .querySelector("#calculateScreenBtn")
   .addEventListener("click", calculateScreenPrice);
+
+document
+  .querySelector("#clientForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const clientName = document.querySelector("#clientNameInput").value.trim();
+    const clientAddress = document
+      .querySelector("#clientAddressInput")
+      .value.trim();
+    const clientPhone = document
+      .querySelector("#clientPhoneInput")
+      .value.trim();
+    const clientEmail = document
+      .querySelector("#clientEmailInput")
+      .value.trim();
+
+    if (!clientName || !clientAddress || !clientPhone || !clientEmail) {
+      document.querySelector("#error-message").style.display = "block";
+      return;
+    }
+
+    document.querySelector("#error-message").style.display = "none";
+
+    generateEstimate(clientName, clientAddress, clientPhone, clientEmail);
+  });
+
+function generateEstimate(clientName, clientAddress, clientPhone, clientEmail) {
+  const formData = getFormData();
+  const totalPrice = calculatePergolaPrice();
+
+  const estimateContent = `
+        <html>
+        <head>
+          <title>Estimate Summary</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+            h2, h3 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            table, th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+            th { background-color: #007bff; color: white; }
+            .total { font-weight: bold; font-size: 18px; color: green; text-align: right; }
+            .contract { margin-top: 40px; font-size: 14px; }
+            .signature-section { margin-top: 30px; text-align: center; }
+            .signature-box { width: 300px; border-top: 1px solid black; margin: 20px auto; padding-top: 5px; }
+          </style>
+        </head>
+        <body>
+          <h2>Pergola Estimate</h2>
+  
+          <h3>Client Information</h3>
+          <table>
+            <tr><td><strong>Name:</strong></td><td>${clientName}</td></tr>
+            <tr><td><strong>Address:</strong></td><td>${clientAddress}</td></tr>
+            <tr><td><strong>Phone:</strong></td><td>${clientPhone}</td></tr>
+            <tr><td><strong>Email:</strong></td><td>${clientEmail}</td></tr>
+          </table>
+  
+          <h3>Estimate Details</h3>
+          <table>
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Design</td><td>${formData.pergolaDesign}</td></tr>
+            <tr><td>Length</td><td>${formData.pergolaLength} ft</td></tr>
+            <tr><td>Projection</td><td>${
+              formData.pergolaProjection
+            } ft</td></tr>
+            <tr><td>Height</td><td>${formData.pergolaHeight}</td></tr>
+            <tr><td>Color</td><td>${formData.pergolaColor}</td></tr>
+            <tr><td>Mounting</td><td>${formData.pergolaMounting}</td></tr>
+            <tr><td>LED Perimeter</td><td>${
+              formData.pergolaLedPerimeter === "yes" ? "Yes" : "No"
+            }</td></tr>
+            <tr><td>Electric Heaters</td><td>${
+              formData.pergolaHeaters
+            }</td></tr>
+            <tr><td>Fans</td><td>${formData.pergolaFans}</td></tr>
+            <tr><td>Permit Required</td><td>${
+              formData.pergolaPermitRequired === "yes" ? "Yes" : "No"
+            }</td></tr>
+            <tr><td>Number of Columns</td><td>${
+              formData.pergolaColumns
+            }</td></tr>
+          </table>
+          
+          <h3 class="total">Total Price: $${totalPrice}</h3>
+  
+          <h3>Contract Agreement</h3>
+          <div class="contract">
+            <p><strong>1. Agreement Overview</strong><br>
+            This Agreement is made between the Parties and may only be modified as specified herein...
+            </p>
+  
+            <p><strong>2. Contract Documents</strong><br>
+            This Agreement encompasses all details of the project scope...
+            </p>
+  
+            <p><strong>3. Payment Terms</strong><br>
+            Payments shall be made to Epic Landscaping Inc. according to the following schedule:<br>
+            30% Deposit upon contract execution.<br>
+            40%: (20% upon permit approval, 20% upon material delivery).<br>
+            20% Upon pergola final completion.<br>
+            10% Upon permit closure.<br>
+            </p>
+  
+            <p><strong>4. Design Revisions and Change Orders</strong><br>
+            Up to three (3) design revisions are included in the contract price...
+            </p>
+  
+            <p><strong>5. Scheduling, Site Access, and Delivery</strong><br>
+            Epic Landscaping Inc. will make every reasonable effort to complete the project on schedule...
+            </p>
+  
+            <p><strong>6. Warranty and Disclaimer</strong><br>
+            The SunXco pergola system is engineered to withstand various weather conditions...
+            </p>
+  
+            <p><strong>7. Dispute Resolution</strong><br>
+            Before initiating legal action, Epic Landscaping Inc. shall have the right to address and remedy any construction defects...
+            </p>
+  
+            <p><strong>8. Insurance</strong><br>
+            The Owner shall maintain standard property and liability insurance...
+            </p>
+  
+            <p><strong>9. Homeowner’s Association and Historic Approvals</strong><br>
+            The Owner is responsible for obtaining any necessary Homeowner’s Association (HOA) approvals...
+            </p>
+  
+            <p><strong>10. Construction Liens</strong><br>
+            Under Florida’s Construction Lien Law (Sections 713.001 - 713.37), contractors and suppliers who are unpaid may file a lien against the property...
+            </p>
+  
+            <p><strong>11. Termination Policy</strong><br>
+            Due to the custom nature of SunXco pergola systems, orders cannot be canceled once placed...
+            </p>
+  
+            <p><strong>12. Cleanup Responsibility</strong><br>
+            Epic Landscaping Inc. shall maintain a clean and organized job site...
+            </p>
+          </div>
+  
+          <div class="signature-section">
+            <h3>Signatures</h3>
+            <div class="signature-box">Owner Signature</div>
+            <p>Print Name: ${clientName}</p>
+            <div class="signature-box">Epic Landscaping Inc. Representative</div>
+            <p>Print Name: ___________________________</p>
+            <p>Date: ___________________________</p>
+          </div>
+  
+          <p>Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+        </body>
+        </html>
+      `;
+
+  const estimateWindow = window.open("", "_blank");
+  estimateWindow.document.open();
+  estimateWindow.document.write(estimateContent);
+  estimateWindow.document.close();
+
+  estimateWindow.print();
+}
