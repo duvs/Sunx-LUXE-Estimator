@@ -1,78 +1,100 @@
+/* Estilos generales */
 .estimate {
-  padding: 20px;
-  margin: 20px;
+  padding: 10px;
+  margin: 10px;
 }
 
 section {
-  margin: 30px 0;
+  margin: 20px 0;
 }
 
-ul {
-  margin-top: 0;
-  padding-left: 20px;
-}
-
-.contract p,
-ul {
-  margin-bottom: 20px;
-}
-
-.estimate img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 10px auto;
-  page-break-inside: avoid;
-}
-
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid var(--base);
-  margin: 1em 0;
-  padding: 0;
-}
-
+/* Ajustar encabezado en móviles */
 #pdfHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  text-align: center;
+  gap: 10px;
 }
 
 #pdfHeader img {
-  height: 150px;
+  max-width: 80%;
+  height: auto;
 }
 
-#pdfHeader div {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 25px;
+/* Evitar desbordamiento de texto */
+p,
+li {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-#totalPriceContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 10px;
+/* Imágenes responsivas */
+.estimate img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 5px auto;
+  page-break-inside: avoid;
 }
 
+/* Mejorar legibilidad en listas */
+ul {
+  margin-top: 5px;
+  padding-left: 15px;
+}
+
+.contract p,
+ul {
+  margin-bottom: 15px;
+}
+
+/* Evitar cortes de página en textos importantes */
 .contract p {
   page-break-inside: avoid;
 }
 
+/* Sección de firmas */
 .signatures {
   page-break-before: always;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
 }
 
 .signature-box {
-  width: 300px;
+  width: 80%;
+  max-width: 250px;
   height: 50px;
   border-top: 2px solid black;
-  margin: 20px auto;
+  margin: 15px auto;
   padding-top: 10px;
+}
+
+/* 🔹 Media Query para pantallas pequeñas (móviles) */
+@media screen and (max-width: 600px) {
+  .estimate {
+    padding: 5px;
+    margin: 5px;
+  }
+
+  #pdfHeader div {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  /* Ajustar texto para no ser muy grande en móviles */
+  h3,
+  h2 {
+    font-size: 18px;
+  }
+
+  /* Ajustar imagenes para evitar que se corten */
+  .estimate img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .signature-box {
+    width: 100%;
+  }
 }
