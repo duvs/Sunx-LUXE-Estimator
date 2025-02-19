@@ -18,15 +18,25 @@ section {
 }
 
 #pdfHeader img {
-  max-width: 80%;
+  max-width: 60%;
   height: auto;
 }
 
 /* Evitar desbordamiento de texto */
 p,
-li {
+li,
+.signatures {
   word-wrap: break-word;
   overflow-wrap: break-word;
+  page-break-inside: avoid;
+}
+
+.illustrations {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  page-break-inside: avoid;
 }
 
 /* Imágenes responsivas */
@@ -56,7 +66,6 @@ ul {
 
 /* Sección de firmas */
 .signatures {
-  page-break-before: always;
   text-align: center;
   padding: 15px;
 }

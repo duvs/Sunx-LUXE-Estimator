@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
       html2pdf()
         .from(element)
         .set({
-          margin: 10,
+          margin: [10, 20, 10, 20],
           image: { type: "jpeg", quality: 0.98 },
           html2canvas: {
             scale: 2,
