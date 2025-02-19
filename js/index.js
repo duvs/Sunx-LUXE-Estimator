@@ -153,7 +153,7 @@ function calculatePergolaPrice() {
 
   document.querySelector("#pergolaResult").style.display = "block";
 
-  return totalPrice;
+  formData = { ...formData, basePrice, installationFee, permitFee, totalPrice };
 }
 
 document
@@ -230,28 +230,14 @@ function generateEstimate() {
     return;
   }
 
-  const totalPrice = calculatePergolaPrice();
+  calculatePergolaPrice();
 
   const estimateData = {
     clientName,
     clientAddress,
     clientPhone,
     clientEmail,
-    pergolaDesign: formData.pergolaDesign,
-    pergolaLength: formData.pergolaLength,
-    pergolaProjection: formData.pergolaProjection,
-    pergolaHeight: formData.pergolaHeight,
-    pergolaColor: formData.pergolaColor,
-    pergolaMounting: formData.pergolaMounting,
-    pergolaLedPerimeter: formData.pergolaLedPerimeter,
-    pergolaHeaters: formData.pergolaHeaters,
-    pergolaFans: formData.pergolaFans,
-    pergolaPermitRequired: formData.pergolaPermitRequired,
-    pergolaColumns: formData.pergolaColumns,
-    basePrice: formData.basePrice || 0,
-    installationFee: formData.installationFee || 0,
-    permitFee: formData.permitFee || 0,
-    totalPrice,
+    ...formData,
   };
 
   localStorage.setItem("estimateData", JSON.stringify(estimateData));

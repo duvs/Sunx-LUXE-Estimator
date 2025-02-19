@@ -33,22 +33,20 @@
         <hr />
         <section class="estimate-details">
           <h3>Estimate Details</h3>
-          <table>
-            <tr>
-              <th>Items</th>
-              <th>Description</th>
-              <th>Price</th>
-            </tr>
-            <tr>
-              <td>Pergola LUXE</td>
-              <td id="description"></td>
-              <td id="price"></td>
-            </tr>
-          </table>
-          <div id="totalPriceContainer">
-            <h3>Total:</h3>
-            <h3 id="totalPrice"></h3>
-          </div>
+          <h4>Pergola LUXE</h4>
+          <p id="description"></p>
+
+          <p><strong>Cost Breakdown:</strong></p>
+          <ul>
+            <li>Base Price: $<span id="basePrice"></span></li>
+            <li>Installation Fee: $<span id="installationFee"></span></li>
+            <li>Permit Fee: $<span id="permitFee"></span></li>
+          </ul>
+
+          <p>
+            <strong>Total Project Cost: </strong> $<span id="totalPrice"></span>
+          </p>
+
           <div id="illustrations">
             <img src="img/banner-luxe.webp" alt="LUXE Pergola" />
             <img src="img/luxe.webp" alt="LUXE Pergola" />
@@ -198,7 +196,7 @@
           <p>Print Name: <span id="clientNameSignature"></span></p>
           <div class="signature-box">Epic Landscaping Inc. Representative</div>
           <p>Print Name: ___________________________</p>
-          <p>Date: ___________________________</p>
+          <p>Date: <span id="estimateDate"></span></p>
         </section>
       </div>
     </main>

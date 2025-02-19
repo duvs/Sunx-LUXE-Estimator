@@ -17,8 +17,13 @@ document.addEventListener("DOMContentLoaded", function () {
   setTextContent("#clientAddress", estimateData.clientAddress);
   setTextContent("#clientPhone", estimateData.clientPhone);
   setTextContent("#clientEmail", estimateData.clientEmail);
-  setTextContent("#price", `$${estimateData.totalPrice.toFixed(2)}`);
-  setTextContent("#totalPrice", `$${estimateData.totalPrice.toFixed(2)}`);
+  setTextContent("#basePrice", `${estimateData.basePrice.toFixed(2)}`);
+  setTextContent(
+    "#installationFee",
+    `${estimateData.installationFee.toFixed(2)}`
+  );
+  setTextContent("#permitFee", `${estimateData.permitFee.toFixed(2)}`);
+  setTextContent("#totalPrice", `${estimateData.totalPrice.toFixed(2)}`);
   setTextContent("#estimateDate", new Date().toLocaleDateString());
 
   const descriptionElement = document.querySelector("#description");
@@ -45,10 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
             : "No, standard installation."
         }</li>
         <li>Supporting Columns: ${estimateData.pergolaColumns || 0}</li>
-        <li>Installation Fee: $${(estimateData.installationFee || 0).toFixed(
-          2
-        )}</li>
-        <li>Permit Fee: $${(estimateData.permitFee || 0).toFixed(2)}</li>
       </ul>
     `;
   }

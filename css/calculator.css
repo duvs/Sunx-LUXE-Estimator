@@ -1,3 +1,8 @@
+#lastEstimate {
+  display: block;
+  text-align: right;
+}
+
 .pergolaImgDiv {
   margin: 20px 0;
   text-align: center;
