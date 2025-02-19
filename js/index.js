@@ -161,8 +161,8 @@ document
   .addEventListener("click", calculatePergolaPrice);
 
 function calculateScreenPrice() {
-  var screenHeight = document.querySelector("#screenHeight").value;
-  var screenWidth = document.querySelector("#screenWidth").value;
+  const screenHeight = document.querySelector("#screenHeight").value;
+  const screenWidth = document.querySelector("#screenWidth").value;
 
   if (screenHeight === "10+ Ft ask pricing") {
     document.querySelector("#screenResult").innerText =
@@ -170,25 +170,52 @@ function calculateScreenPrice() {
     return;
   }
 
-  const price = parseFloat(screenPrices[screenHeight][screenWidth]);
+  const screenLinearFeet =
+    document.querySelector("#screenLinearFeet").value || 0;
 
-  if (price) {
-    document.getElementById(
-      "screenResultText"
-    ).innerText = `Screen Price: ${price.toFixed(
+  if (!screenHeight || !screenWidth || !screenLinearFeet) {
+    alert("Please fill all the fields for pricing");
+    return;
+  }
+
+  const basePrice = parseFloat(screenPrices[screenHeight][screenWidth]);
+
+  const heightFeet = parseFloat(screenHeight.split(" ")[0]);
+  const widthFeet = parseFloat(screenWidth.split(" ")[0]);
+
+  const numberScreens = document.querySelector("#numberScreens").value;
+
+  const totalSqFt = heightFeet * widthFeet;
+
+  const baseCostPerSqFt = basePrice / totalSqFt;
+
+  const officialPricePerSqFt = baseCostPerSqFt * 2.75;
+
+  const totalPriceBeforeLinearFeet = officialPricePerSqFt * totalSqFt;
+
+  const finalPricePerLinearFoot = totalPriceBeforeLinearFeet / widthFeet;
+
+  const finalPrice = finalPricePerLinearFoot * screenLinearFeet;
+
+  if (finalPrice) {
+    document.querySelector(
+      "#screenResultText"
+    ).textContent = `Total Screen Price: ${finalPrice.toFixed(
       2
     )} (${screenHeight} x ${screenWidth})`;
-
-    document.querySelector("#screenResult").style.display = "block";
   } else {
-    document.querySelector("#screenResult").innerText =
+    document.querySelector("#screenResultText").textContent =
       "Please select valid dimensions for pricing";
   }
+  document.querySelector("#screenResult").style.display = "block";
 }
 
 document
   .querySelector("#calculateScreenBtn")
-  .addEventListener("click", calculateScreenPrice);
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    calculateScreenPrice();
+  });
 
 function generateEstimate() {
   const clientName = document.querySelector("#clientNameInput").value.trim();

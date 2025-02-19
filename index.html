@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pergola LUXE Calculator</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/calculator.css">
+    <link rel="stylesheet" href="css/calculator.css" />
   </head>
   <body>
     <header>
@@ -133,52 +133,93 @@
           <div class="customerInfo">
             <form id="clientForm">
               <label for="clientNameInput">Full Name:</label>
-              <input type="text" id="clientNameInput" placeholder="Enter a Full Name" required />
-            
+              <input
+                type="text"
+                id="clientNameInput"
+                placeholder="Enter a Full Name"
+                required
+              />
+
               <label for="clientAddressInput">Address:</label>
-              <input type="text" id="clientAddressInput" placeholder="Enter an Address" required />
-            
+              <input
+                type="text"
+                id="clientAddressInput"
+                placeholder="Enter an Address"
+                required
+              />
+
               <label for="clientPhoneInput">Phone:</label>
-              <input type="tel" id="clientPhoneInput" placeholder="Enter a Phone Number" required />
-            
+              <input
+                type="tel"
+                id="clientPhoneInput"
+                placeholder="Enter a Phone Number"
+                required
+              />
+
               <label for="clientEmailInput">Email:</label>
-              <input type="email" id="clientEmailInput" placeholder="Enter an Email" required />
-            
-              <button type="submit" id="generateEstimateBtn">Generate Estimate</button>
+              <input
+                type="email"
+                id="clientEmailInput"
+                placeholder="Enter an Email"
+                required
+              />
+
+              <button type="submit" id="generateEstimateBtn">
+                Generate Estimate
+              </button>
               <button type="reset">Clear</button>
             </form>
-            
+          </div>
         </div>
 
         <div class="motorizedScreenDiv">
           <h2>Motorized Screen Price Calculator</h2>
 
-          <label for="screenHeight">Screen Height:</label>
-          <select id="screenHeight" required>
-            <option value="6 ft 7 inch" selected>6 ft 7 inch</option>
-            <option value="8 ft 2 inch">8 ft 2 inch</option>
-            <option value="9 ft 10 inch">9 ft 10 inch</option>
-            <option value="10+ Ft ask pricing">
-              10+ Ft (Call for Pricing)
-            </option>
-          </select>
+          <form id="screenForm">
+            <label for="screenHeight">Screen Height:</label>
+            <select id="screenHeight" required>
+              <option value="6 ft 7 inch" selected>6 ft 7 inch</option>
+              <option value="8 ft 2 inch">8 ft 2 inch</option>
+              <option value="9 ft 10 inch">9 ft 10 inch</option>
+              <option value="10+ Ft ask pricing">
+                10+ Ft (Call for Pricing)
+              </option>
+            </select>
 
-          <label for="screenWidth">Screen Width:</label>
-          <select id="screenWidth" required>
-            <option value="4 ft 11 inch" selected>4 ft 11 inch</option>
-            <option value="6 ft 7 inch">6 ft 7 inch</option>
-            <option value="8 ft 2 inch">8 ft 2 inch</option>
-            <option value="9 ft 10 inch">9 ft 10 inch</option>
-            <option value="11 ft 5 inch">11 ft 5 inch</option>
-            <option value="13 ft 1 inch">13 ft 1 inch</option>
-            <option value="14 ft 9 inch">14 ft 9 inch</option>
-            <option value="16 ft 4 inch">16 ft 4 inch</option>
-            <option value="19 ft 8 inch">19 ft 8 inch</option>
-          </select>
+            <label for="screenWidth">Screen Width:</label>
+            <select id="screenWidth" required>
+              <option value="4 ft 11 inch" selected>4 ft 11 inch</option>
+              <option value="6 ft 7 inch">6 ft 7 inch</option>
+              <option value="8 ft 2 inch">8 ft 2 inch</option>
+              <option value="9 ft 10 inch">9 ft 10 inch</option>
+              <option value="11 ft 5 inch">11 ft 5 inch</option>
+              <option value="13 ft 1 inch">13 ft 1 inch</option>
+              <option value="14 ft 9 inch">14 ft 9 inch</option>
+              <option value="16 ft 4 inch">16 ft 4 inch</option>
+              <option value="19 ft 8 inch">19 ft 8 inch</option>
+            </select>
 
-          <button type="button" id="calculateScreenBtn">
-            Calculate Screen Price
-          </button>
+            <label for="screenLinearFeet">Linear Feet:</label>
+            <input
+              type="number"
+              name="screenLinearFeet"
+              id="screenLinearFeet"
+              placeholder="Enter linear feet"
+              required
+            />
+
+            <label for="numberScreens">Number of Screens:</label>
+            <input
+              type="number"
+              name="numberScreens"
+              id="numberScreens"
+              placeholder="Enter number of screens"
+            />
+
+            <button type="submit" id="calculateScreenBtn">
+              Calculate Screen Price
+            </button>
+          </form>
 
           <div id="screenResult" class="result" style="display: none">
             <p id="screenResultText"></p>
@@ -188,8 +229,8 @@
     </main>
     <footer>
       <p>
-        &copy; 2025. Originally created by Sunx. Enhanced & maintained
-        by WittyLab.
+        &copy; 2025. Originally created by Sunx. Enhanced & maintained by
+        WittyLab.
       </p>
     </footer>
     <script src="js/index.js" type="module"></script>
