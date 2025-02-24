@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector("#jsWarning").style.display = "none";
+});
+
 import {
   priceChart,
   lengthOptions,

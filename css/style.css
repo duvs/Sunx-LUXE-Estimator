@@ -32,6 +32,15 @@ body {
   color: var(--contrast);
 }
 
+#jsWarning {
+  display: none;
+  background: red;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 18px;
+}
+
 main {
   max-width: 900px;
   margin: 60px auto;
