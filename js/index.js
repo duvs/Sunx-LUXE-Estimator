@@ -6,26 +6,84 @@ import {
   screenPrices,
 } from "./priceData.js";
 
+const validDesigns = ["D1", "D2", "D3"];
+const validHeights = ["standard", "custom"];
+const validColors = ["RAL7016", "RAL9016", "custom"];
+const validMountings = ["freestanding", "wall"];
+const validPermitOptions = ["yes", "no"];
+const validLedOptions = ["yes", "no"];
+
 let formData = {};
 
 const designSelect = document.querySelector("#pergolaDesign");
 const permitSelect = document.querySelector("#pergolaPermitRequired");
 
 function getFormData() {
+  const pergolaDesign = designSelect.value;
+  const pergolaLength = document.querySelector("#pergolaLength").value;
+  const pergolaProjection = document.querySelector("#pergolaProjection").value;
+  const pergolaHeight = document.querySelector("#pergolaHeight").value;
+  const pergolaColor = document.querySelector("#pergolaColor").value;
+  const pergolaMounting = document.querySelector("#pergolaMounting").value;
+  const pergolaLedPerimeter = document.querySelector(
+    "#pergolaLedPerimeter"
+  ).value;
+  const pergolaPermitRequired = permitSelect.value;
+  const pergolaHeaters =
+    parseInt(document.querySelector("#pergolaHeaters").value) || 0;
+  const pergolaFans =
+    parseInt(document.querySelector("#pergolaFans").value) || 0;
+  const pergolaColumns =
+    parseInt(document.querySelector("#pergolaColumns").value) || 4;
+
+  let errors = [];
+
+  if (!validDesigns.includes(pergolaDesign)) {
+    errors.push("⚠ Invalid Pergola Design selected.");
+  }
+  if (!validHeights.includes(pergolaHeight)) {
+    errors.push("⚠ Invalid Pergola Height selected.");
+  }
+  if (!validColors.includes(pergolaColor)) {
+    errors.push("⚠ Invalid Pergola Color selected.");
+  }
+  if (!validMountings.includes(pergolaMounting)) {
+    errors.push("⚠ Invalid Mounting Type selected.");
+  }
+  if (!validPermitOptions.includes(pergolaPermitRequired)) {
+    errors.push("⚠ Invalid Permit option selected.");
+  }
+  if (!validLedOptions.includes(pergolaLedPerimeter)) {
+    errors.push("⚠ Invalid LED Perimeter option selected.");
+  }
+
+  if (isNaN(pergolaHeaters) || pergolaHeaters < 0) {
+    errors.push("⚠ Electric Heaters must be a valid number (0 or more).");
+  }
+  if (isNaN(pergolaFans) || pergolaFans < 0) {
+    errors.push("⚠ Fan Beams must be a valid number (0 or more).");
+  }
+  if (isNaN(pergolaColumns) || pergolaColumns < 1 || pergolaColumns > 16) {
+    errors.push("⚠ Number of Columns must be between 1 and 16.");
+  }
+
+  if (errors.length > 0) {
+    alert(errors.join("\n"));
+    return null;
+  }
+
   return {
-    pergolaDesign: designSelect.value,
-    pergolaLength: document.querySelector("#pergolaLength").value,
-    pergolaProjection: document.querySelector("#pergolaProjection").value,
-    pergolaHeight: document.querySelector("#pergolaHeight").value,
-    pergolaColor: document.querySelector("#pergolaColor").value,
-    pergolaMounting: document.querySelector("#pergolaMounting").value,
-    pergolaLedPerimeter: document.querySelector("#pergolaLedPerimeter").value,
-    pergolaHeaters:
-      parseInt(document.querySelector("#pergolaHeaters").value) || 0,
-    pergolaFans: parseInt(document.querySelector("#pergolaFans").value) || 0,
-    pergolaPermitRequired: permitSelect.value,
-    pergolaColumns:
-      parseInt(document.querySelector("#pergolaColumns").value) || 4,
+    pergolaDesign,
+    pergolaLength,
+    pergolaProjection,
+    pergolaHeight,
+    pergolaColor,
+    pergolaMounting,
+    pergolaLedPerimeter,
+    pergolaHeaters,
+    pergolaFans,
+    pergolaPermitRequired,
+    pergolaColumns,
   };
 }
 
@@ -66,13 +124,15 @@ permitSelect.addEventListener("change", updatePermitFee);
 
 function calculatePergolaPrice() {
   formData = getFormData();
+  if (!formData) return;
 
   const priceKey = `${formData.pergolaDesign}-${formData.pergolaLength}-${formData.pergolaProjection}`;
   const basePrice = parseFloat(priceChart[priceKey] || 0);
 
   if (basePrice === 0) {
-    document.querySelector("#pergolaResult").innerText =
-      "Price not found for selected combination. Please verify measurements.";
+    alert(
+      "Price not found for selected combination. Please verify measurements."
+    );
     return;
   }
 
@@ -160,21 +220,57 @@ document
   .querySelector("#calculatePergolaBtn")
   .addEventListener("click", calculatePergolaPrice);
 
+const validScreenHeights = [
+  "6 ft 7 inch",
+  "8 ft 2 inch",
+  "9 ft 10 inch",
+  "10+ Ft ask pricing",
+];
+
+const validScreenWidths = [
+  "4 ft 11 inch",
+  "6 ft 7 inch",
+  "8 ft 2 inch",
+  "9 ft 10 inch",
+  "11 ft 5 inch",
+  "13 ft 1 inch",
+  "14 ft 9 inch",
+  "16 ft 4 inch",
+  "19 ft 8 inch",
+];
+
 function calculateScreenPrice() {
   const screenHeight = document.querySelector("#screenHeight").value;
   const screenWidth = document.querySelector("#screenWidth").value;
+  const screenLinearFeet = document.querySelector("#screenLinearFeet").value;
+  const numberScreens = document.querySelector("#numberScreens").value;
 
-  if (screenHeight === "10+ Ft ask pricing") {
-    document.querySelector("#screenResult").innerText =
-      "Price not found for selected combination. Please verify measurements.";
+  let errors = [];
+
+  if (!validScreenHeights.includes(screenHeight)) {
+    errors.push("⚠ Invalid Screen Height selected.");
+  }
+  if (!validScreenWidths.includes(screenWidth)) {
+    errors.push("⚠ Invalid Screen Width selected.");
+  }
+
+  if (isNaN(screenLinearFeet) || screenLinearFeet <= 0) {
+    errors.push("⚠ Linear Feet must be a positive number.");
+  }
+
+  if (isNaN(numberScreens) || numberScreens <= 0) {
+    errors.push("⚠ Number of Screens must be a positive number.");
+  }
+
+  if (errors.length > 0) {
+    alert(errors.join("\n"));
     return;
   }
 
-  const screenLinearFeet =
-    document.querySelector("#screenLinearFeet").value || 0;
-
-  if (!screenHeight || !screenWidth || !screenLinearFeet) {
-    alert("Please fill all the fields for pricing");
+  if (screenHeight === "10+ Ft ask pricing") {
+    alert(
+      "Price not found for selected combination. Please verify measurements."
+    );
     return;
   }
 
@@ -182,8 +278,6 @@ function calculateScreenPrice() {
 
   const heightFeet = parseFloat(screenHeight.split(" ")[0]);
   const widthFeet = parseFloat(screenWidth.split(" ")[0]);
-
-  const numberScreens = document.querySelector("#numberScreens").value;
 
   const totalSqFt = heightFeet * widthFeet;
 
@@ -217,16 +311,53 @@ document
     calculateScreenPrice();
   });
 
-function generateEstimate() {
-  const clientName = document.querySelector("#clientNameInput").value.trim();
-  const clientAddress = document
-    .querySelector("#clientAddressInput")
-    .value.trim();
-  const clientPhone = document.querySelector("#clientPhoneInput").value.trim();
-  const clientEmail = document.querySelector("#clientEmailInput").value.trim();
+function sanitizeInput(input) {
+  return input.trim().replace(/[<>/'"]/g, "");
+}
 
-  if (!clientName || !clientAddress || !clientPhone || !clientEmail) {
-    alert("Please fill in all client details before generating the estimate.");
+function generateEstimate() {
+  const clientName = sanitizeInput(
+    document.querySelector("#clientNameInput").value
+  );
+  const clientAddress = sanitizeInput(
+    document.querySelector("#clientAddressInput").value
+  );
+  const clientPhone = sanitizeInput(
+    document.querySelector("#clientPhoneInput").value
+  );
+  const clientEmail = sanitizeInput(
+    document.querySelector("#clientEmailInput").value
+  );
+
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  const addressRegex = /^[a-zA-Z0-9\s,.-]+$/;
+  const phoneRegex = /^\+?[0-9]{10,15}$/;
+  const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+  let errors = [];
+
+  if (!nameRegex.test(clientName)) {
+    errors.push("⚠ Full Name should contain only letters and spaces.");
+  }
+
+  if (!addressRegex.test(clientAddress)) {
+    errors.push(
+      "⚠ Address can only include letters, numbers, spaces, commas, dots, and hyphens."
+    );
+  }
+
+  if (!phoneRegex.test(clientPhone)) {
+    errors.push(
+      "⚠ Phone number should be 10-15 digits long (optional + at start)."
+    );
+  }
+
+  if (!emailRegex.test(clientEmail)) {
+    errors.push("⚠ Enter a valid email address.");
+  }
+
+  if (errors.length > 0) {
+    alert(errors.join("\n"));
     return;
   }
 

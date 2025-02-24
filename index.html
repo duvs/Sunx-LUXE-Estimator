@@ -141,6 +141,8 @@
                 id="clientNameInput"
                 placeholder="Enter a Full Name"
                 required
+                pattern="^[a-zA-Z\s]+$"
+                title="Only letters and spaces are allowed"
               />
 
               <label for="clientAddressInput">Address:</label>
@@ -149,6 +151,8 @@
                 id="clientAddressInput"
                 placeholder="Enter an Address"
                 required
+                pattern="^[a-zA-Z0-9\s,.-]+$"
+                title="Only letters, numbers, spaces, commas, dots, and hyphens are allowed"
               />
 
               <label for="clientPhoneInput">Phone:</label>
@@ -157,6 +161,8 @@
                 id="clientPhoneInput"
                 placeholder="Enter a Phone Number"
                 required
+                pattern="^\+?[0-9]{10,15}$"
+                title="Enter a valid phone number (10-15 digits, optional + at start)"
               />
 
               <label for="clientEmailInput">Email:</label>
@@ -164,7 +170,8 @@
                 type="email"
                 id="clientEmailInput"
                 placeholder="Enter an Email"
-                required
+                pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+                title="Enter a valid email address"
               />
 
               <button type="submit" id="generateEstimateBtn">

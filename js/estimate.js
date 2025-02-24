@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const estimateData = JSON.parse(localStorage.getItem("estimateData"));
+  const clientName = estimateData.clientName;
 
   if (!estimateData) {
     alert("No estimate data found. Please generate an estimate first.");
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (element) element.textContent = value || "N/A";
   };
 
-  setTextContent("#clientName", estimateData.clientName);
+  setTextContent("#clientName", clientName);
   setTextContent("#clientAddress", estimateData.clientAddress);
   setTextContent("#clientPhone", estimateData.clientPhone);
   setTextContent("#clientEmail", estimateData.clientEmail);
