@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
   const estimateData = JSON.parse(localStorage.getItem("estimateData"));
-  const clientName = estimateData.clientName;
 
   if (!estimateData) {
     alert("No estimate data found. Please generate an estimate first.");
@@ -14,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (element) element.textContent = value || "N/A";
   };
 
-  setTextContent("#clientName", clientName);
+  setTextContent("#clientName", estimateData.clientName);
   setTextContent("#clientAddress", estimateData.clientAddress);
   setTextContent("#clientPhone", estimateData.clientPhone);
   setTextContent("#clientEmail", estimateData.clientEmail);
@@ -64,6 +63,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      let clientName = estimateData.clientName.trim();
+
+      let nameParts = clientName.split(/\s+/);
+      let shortName = nameParts.slice(0, 2).join("_");
+
+      shortName = shortName.substring(0, 30);
+
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+
+      const formattedDate = `${year}-${month}-${day}`;
+      const fileName = `${shortName}_Estimate_${formattedDate}.pdf`;
+
       html2pdf()
         .from(element)
         .set({
@@ -78,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
           },
           jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
         })
-        .save("Pergola_Estimate.pdf");
+        .save(fileName);
     });
   }
 });
