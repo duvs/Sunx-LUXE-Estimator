@@ -109,9 +109,10 @@ function updatePergolaDesign() {
   installationFeeInput.value =
     installationFeeByDesign[selectedDesign].text || "";
 
-  let pergolaDesignImg = document.querySelector("#pergolaImg");
-  pergolaDesignImg.src = `img/${selectedDesign}-image.jpg`;
-  pergolaDesignImg.alt = `Pergola design ${selectedDesign}`;
+  Object.assign(document.querySelector("#pergolaImg"), {
+    src: `img/${selectedDesign}-image.jpg`,
+    alt: `Pergola design ${selectedDesign}`,
+  });
 }
 
 designSelect.addEventListener("change", updatePergolaDesign);
