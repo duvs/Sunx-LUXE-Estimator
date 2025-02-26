@@ -117,6 +117,16 @@ function updatePergolaDesign() {
 
 designSelect.addEventListener("change", updatePergolaDesign);
 
+const ledSelect = document.querySelector("#pergolaLedPerimeter");
+
+function showLedImg() {
+  const selectedLed = ledSelect.value;
+  document.querySelector("#ledImgDiv").style.display =
+    selectedLed === "No" ? "none" : "block";
+}
+
+ledSelect.addEventListener("change", showLedImg);
+
 function updatePermitFee() {
   const selectedPermit = permitSelect.value;
   document.querySelector("#pergolaPermitFee").value =
