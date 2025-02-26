@@ -30,22 +30,22 @@ document.addEventListener("DOMContentLoaded", function () {
   if (descriptionElement) {
     descriptionElement.innerHTML = `
       <ul>
-        <li>Pergola Design: ${estimateData.pergolaDesign}</li>
-        <li>Dimensions: ${estimateData.pergolaLength} ft (Length) x ${
-      estimateData.pergolaProjection
-    } ft (Projection)</li>
-        <li>Height: ${estimateData.pergolaHeight}</li>
-        <li>Structure Color: ${estimateData.pergolaColor}</li>
-        <li>Mounting Type: ${estimateData.pergolaMounting}</li>
+        <li>Pergola Design ${estimateData.pergolaDesign.text}</li>
+        <li>Dimensions: ${estimateData.pergolaLength.text} (Length) x ${
+      estimateData.pergolaProjection.text
+    } (Projection)</li>
+        <li>Height: ${estimateData.pergolaHeight.text}</li>
+        <li>Structure Color: ${estimateData.pergolaColor.text}</li>
+        <li>Mounting Type: ${estimateData.pergolaMounting.text}</li>
         <li>LED Perimeter: ${
-          estimateData.pergolaLedPerimeter === "yes"
+          estimateData.pergolaLedPerimeter.value === "Yes"
             ? "Included"
             : "Not included"
         }</li>
         <li>Electric Heaters: ${estimateData.pergolaHeaters || 0}</li>
         <li>Fan Beams: ${estimateData.pergolaFans || 0}</li>
         <li>Permit Required: ${
-          estimateData.pergolaPermitRequired === "yes"
+          estimateData.pergolaPermitRequired.value === "yes"
             ? "Yes, additional engineering and permitting fees apply."
             : "No, standard installation."
         }</li>
