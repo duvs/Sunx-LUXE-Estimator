@@ -89,7 +89,7 @@ function getFormData() {
 
 function updatePergolaDesign() {
   let selectedDesign = designSelect.value;
-  let options = lengthOptions[selectedDesign] || [];
+  let options = data.lengthOptions[selectedDesign] || [];
 
   let lengthSelect = document.querySelector("#pergolaLength");
   lengthSelect.innerHTML = "";
@@ -101,9 +101,8 @@ function updatePergolaDesign() {
     lengthSelect.appendChild(opt);
   });
 
-  let installationFeeInput = document.querySelector("#pergolaInstallationFee");
-  installationFeeInput.value =
-    installationFeeByDesign[selectedDesign].text || "";
+  document.querySelector("#pergolaInstallationFee").value =
+    data.installationFeeByDesign[selectedDesign].text || "";
 
   Object.assign(document.querySelector("#pergolaImg"), {
     src: `img/${selectedDesign}-image.jpg`,
