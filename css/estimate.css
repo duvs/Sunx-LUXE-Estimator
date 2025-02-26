@@ -25,6 +25,7 @@ section {
 /* Evitar desbordamiento de texto */
 p,
 li,
+.avoidBreak,
 .signatures {
   word-wrap: break-word;
   overflow-wrap: break-word;
