@@ -1,4 +1,4 @@
-var priceChart = {
+const priceChart = {
   // D1 prices
   "D1-8.2-8.2": 6051.6,
   "D1-8.2-9.84": 7261.92,
@@ -146,41 +146,51 @@ var priceChart = {
   "D3-21.4-8.2": 15793.2,
 };
 
-var lengthOptions = {
+const designOptions = ["D1", "D2", "D3"];
+
+const lengthOptions = {
   D1: [
     { value: "8.2", text: "8 ft 2 inch" },
-    { value: "9.84", text: "9 ft 10 in" },
-    { value: "11.5", text: "11 ft 6 in" },
-    { value: "13.1", text: "13 ft 1 in" },
-    { value: "14.8", text: "14 ft 9 in" },
+    { value: "9.84", text: "9 ft 10 inch" },
+    { value: "11.5", text: "11 ft 6 inch" },
+    { value: "13.1", text: "13 ft 1 inch" },
+    { value: "14.8", text: "14 ft 9 inch" },
   ],
   D2: [
-    { value: "19.67", text: "19 ft 8 in" },
-    { value: "18.0", text: "18 ft 0 in" },
-    { value: "16.42", text: "16 ft 5 in" },
+    { value: "19.67", text: "19 ft 8 inch" },
+    { value: "18.0", text: "18 ft 0 inch" },
+    { value: "16.42", text: "16 ft 5 inch" },
   ],
   D3: [
-    { value: "29.3", text: "29 ft 6 in" },
-    { value: "27.8", text: "27 ft 10 in" },
-    { value: "26.3", text: "26 ft 3 in" },
-    { value: "24.7", text: "24 ft 7 in" },
-    { value: "22.11", text: "22 ft 11 in" },
-    { value: "21.4", text: "21 ft 4 in" },
+    { value: "29.3", text: "29 ft 6 inch" },
+    { value: "27.8", text: "27 ft 10 inch" },
+    { value: "26.3", text: "26 ft 3 inch" },
+    { value: "24.7", text: "24 ft 7 inch" },
+    { value: "22.11", text: "22 ft 11 inch" },
+    { value: "21.4", text: "21 ft 4 inch" },
   ],
 };
 
 var projectionOptions = [
-  { value: "22.11", text: "22 ft 11 in" },
-  { value: "21.4", text: "21 ft 4 in" },
-  { value: "19.8", text: "19 ft 8 in" },
-  { value: "18.0", text: "18 ft 0 in" },
-  { value: "16.42", text: "16 ft 5 in" },
-  { value: "14.8", text: "14 ft 9 in" },
-  { value: "13.1", text: "13 ft 1 in" },
-  { value: "11.5", text: "11 ft 6 in" },
-  { value: "9.84", text: "9 ft 10 in" },
+  { value: "22.11", text: "22 ft 11 inch" },
+  { value: "21.4", text: "21 ft 4 inch" },
+  { value: "19.8", text: "19 ft 8 inch" },
+  { value: "18.0", text: "18 ft 0 inch" },
+  { value: "16.42", text: "16 ft 5 inch" },
+  { value: "14.8", text: "14 ft 9 inch" },
+  { value: "13.1", text: "13 ft 1 inch" },
+  { value: "11.5", text: "11 ft 6 inch" },
+  { value: "9.84", text: "9 ft 10 inch" },
   { value: "8.2", text: "8 ft 2 inch" },
 ];
+
+const heightsOptions = ["Standard", "Custom"];
+
+const colorsOptions = ["RAL7016", "RAL9016", "Custom"];
+
+const mountingOptions = ["Freestanding", "Wall"];
+const permitOptions = ["Yes", "No"];
+const ledOptions = ["Yes", "No"];
 
 var installationFeeByDesign = {
   D1: { value: "1500", text: "$1,500" },
@@ -189,7 +199,7 @@ var installationFeeByDesign = {
 };
 
 // Screen prices based on height and width dimensions
-var screenPrices = {
+const screenPrices = {
   "6 ft 7 inch": {
     "4 ft 11 inch": 224.0,
     "6 ft 7 inch": 271.0,
@@ -226,10 +236,37 @@ var screenPrices = {
   "10+ Ft ask pricing": {},
 };
 
-export {
+const screenHeightOptions = [
+  "6 ft 7 inch",
+  "8 ft 2 inch",
+  "9 ft 10 inch",
+  "10+ Ft ask pricing",
+];
+
+const screenWidthOptions = [
+  "4 ft 11 inch",
+  "6 ft 7 inch",
+  "8 ft 2 inch",
+  "9 ft 10 inch",
+  "11 ft 5 inch",
+  "13 ft 1 inch",
+  "14 ft 9 inch",
+  "16 ft 4 inch",
+  "19 ft 8 inch",
+];
+
+export default {
   priceChart,
+  designOptions,
   lengthOptions,
   projectionOptions,
+  heightsOptions,
+  colorsOptions,
+  mountingOptions,
+  permitOptions,
+  ledOptions,
   installationFeeByDesign,
   screenPrices,
+  screenHeightOptions,
+  screenWidthOptions,
 };

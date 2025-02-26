@@ -2,20 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector("#jsWarning").style.display = "none";
 });
 
-import {
-  priceChart,
-  lengthOptions,
-  projectionOptions,
-  installationFeeByDesign,
-  screenPrices,
-} from "./priceData.js";
-
-const validDesigns = ["D1", "D2", "D3"];
-const validHeights = ["standard", "custom"];
-const validColors = ["RAL7016", "RAL9016", "custom"];
-const validMountings = ["freestanding", "wall"];
-const validPermitOptions = ["yes", "no"];
-const validLedOptions = ["yes", "no"];
+import data from "./data.js";
 
 let formData = {};
 
@@ -23,41 +10,50 @@ const designSelect = document.querySelector("#pergolaDesign");
 const permitSelect = document.querySelector("#pergolaPermitRequired");
 
 function getFormData() {
-  const pergolaDesign = designSelect.value;
-  const pergolaLength = document.querySelector("#pergolaLength").value;
-  const pergolaProjection = document.querySelector("#pergolaProjection").value;
-  const pergolaHeight = document.querySelector("#pergolaHeight").value;
-  const pergolaColor = document.querySelector("#pergolaColor").value;
-  const pergolaMounting = document.querySelector("#pergolaMounting").value;
-  const pergolaLedPerimeter = document.querySelector(
-    "#pergolaLedPerimeter"
-  ).value;
-  const pergolaPermitRequired = permitSelect.value;
+  const getSelectData = (id) => {
+    const select = document.querySelector(`#${id}`);
+    if (!select) return { value: "", text: "" };
+
+    const value = select.value;
+    const text = select.options[select.selectedIndex]?.text || "";
+
+    return { value, text };
+  };
+
+  const pergolaDesign = getSelectData("pergolaDesign");
+  const pergolaLength = getSelectData("pergolaLength");
+  const pergolaProjection = getSelectData("pergolaProjection");
+  const pergolaHeight = getSelectData("pergolaHeight");
+  const pergolaColor = getSelectData("pergolaColor");
+  const pergolaMounting = getSelectData("pergolaMounting");
+  const pergolaLedPerimeter = getSelectData("pergolaLedPerimeter");
+  const pergolaPermitRequired = getSelectData("pergolaPermitRequired");
+
   const pergolaHeaters =
     parseInt(document.querySelector("#pergolaHeaters").value) || 0;
   const pergolaFans =
     parseInt(document.querySelector("#pergolaFans").value) || 0;
   const pergolaColumns =
-    parseInt(document.querySelector("#pergolaColumns").value) || 4;
+    parseInt(document.querySelector("#pergolaColumns").value) || 0;
 
   let errors = [];
 
-  if (!validDesigns.includes(pergolaDesign)) {
+  if (!data.designOptions.includes(pergolaDesign.value)) {
     errors.push("⚠ Invalid Pergola Design selected.");
   }
-  if (!validHeights.includes(pergolaHeight)) {
+  if (!data.heightsOptions.includes(pergolaHeight.value)) {
     errors.push("⚠ Invalid Pergola Height selected.");
   }
-  if (!validColors.includes(pergolaColor)) {
+  if (!data.colorsOptions.includes(pergolaColor.value)) {
     errors.push("⚠ Invalid Pergola Color selected.");
   }
-  if (!validMountings.includes(pergolaMounting)) {
+  if (!data.mountingOptions.includes(pergolaMounting.value)) {
     errors.push("⚠ Invalid Mounting Type selected.");
   }
-  if (!validPermitOptions.includes(pergolaPermitRequired)) {
+  if (!data.permitOptions.includes(pergolaPermitRequired.value)) {
     errors.push("⚠ Invalid Permit option selected.");
   }
-  if (!validLedOptions.includes(pergolaLedPerimeter)) {
+  if (!data.ledOptions.includes(pergolaLedPerimeter.value)) {
     errors.push("⚠ Invalid LED Perimeter option selected.");
   }
 
@@ -67,8 +63,8 @@ function getFormData() {
   if (isNaN(pergolaFans) || pergolaFans < 0) {
     errors.push("⚠ Fan Beams must be a valid number (0 or more).");
   }
-  if (isNaN(pergolaColumns) || pergolaColumns < 1 || pergolaColumns > 16) {
-    errors.push("⚠ Number of Columns must be between 1 and 16.");
+  if (isNaN(pergolaColumns) || pergolaColumns < 0 || pergolaColumns > 10) {
+    errors.push("⚠ Number of footers must be between 0 and 10.");
   }
 
   if (errors.length > 0) {
@@ -141,8 +137,8 @@ function calculatePergolaPrice() {
   formData = getFormData();
   if (!formData) return;
 
-  const priceKey = `${formData.pergolaDesign}-${formData.pergolaLength}-${formData.pergolaProjection}`;
-  const basePrice = parseFloat(priceChart[priceKey] || 0);
+  const priceKey = `${formData.pergolaDesign.value}-${formData.pergolaLength.value}-${formData.pergolaProjection.value}`;
+  const basePrice = parseFloat(data.priceChart[priceKey] || 0);
 
   if (basePrice === 0) {
     alert(
@@ -155,8 +151,8 @@ function calculatePergolaPrice() {
   let adjustments = [];
 
   // Mounting Adjustment
-  if (formData.pergolaMounting?.toLowerCase() === "wall") {
-    const posts = formData.pergolaDesign === "D3" ? 8 : 4;
+  if (formData.pergolaMounting?.value === "Wall") {
+    const posts = formData.pergolaDesign.value === "D3" ? 8 : 4;
     let mountingDiscount = 140 * posts;
     let mountingAdjustment = 8 * posts;
     totalPrice -= mountingDiscount;
@@ -172,7 +168,7 @@ function calculatePergolaPrice() {
       parseFloat(formData.pergolaProjection || 0)) *
     2;
   let ledCost = perimeter * 4.27;
-  if (formData.pergolaLedPerimeter === "yes") {
+  if (formData.pergolaLedPerimeter.value === "Yes") {
     totalPrice += ledCost;
     adjustments.push(`LED Perimeter: +$${ledCost.toFixed(2)}`);
   }
@@ -185,7 +181,7 @@ function calculatePergolaPrice() {
   }
 
   // Fan Beam
-  let fanCost = parseFloat(formData.fans || 0) * 209;
+  let fanCost = parseFloat(formData.pergolaFans || 0) * 209;
   totalPrice += fanCost;
   if (fanCost > 0) {
     adjustments.push(`Fans: +$${fanCost.toFixed(2)}`);
@@ -193,12 +189,14 @@ function calculatePergolaPrice() {
 
   // Installation Fee
   let installationFee =
-    parseFloat(installationFeeByDesign[formData.pergolaDesign]?.value) || 0;
+    parseFloat(
+      data.installationFeeByDesign[formData.pergolaDesign.value]?.value
+    ) || 0;
   totalPrice += installationFee;
   adjustments.push(`Installation Fee: +$${installationFee.toFixed(2)}`);
 
   // Permit Fee
-  let permitFee = formData.pergolaPermitRequired === "yes" ? 3500 : 0;
+  let permitFee = formData.pergolaPermitRequired.value === "Yes" ? 3500 : 0;
   totalPrice += permitFee;
   if (permitFee > 0) {
     adjustments.push(`Permit & Engineering Fee: +$${permitFee}`);
@@ -206,11 +204,8 @@ function calculatePergolaPrice() {
 
   // Concrete Footing Costs
   const footingPricePerColumn =
-    formData.pergolaPermitRequired === "yes" ? 800 : 400;
-  const numberOfColumns = Math.max(
-    0,
-    parseInt(formData.pergolaColumns, 10) || 0
-  );
+    formData.pergolaPermitRequired.value === "Yes" ? 800 : 400;
+  const numberOfColumns = Math.max(0, formData.pergolaColumns || 0);
   let footingCost = footingPricePerColumn * numberOfColumns;
   totalPrice += footingCost;
   adjustments.push(
@@ -235,37 +230,19 @@ document
   .querySelector("#calculatePergolaBtn")
   .addEventListener("click", calculatePergolaPrice);
 
-const validScreenHeights = [
-  "6 ft 7 inch",
-  "8 ft 2 inch",
-  "9 ft 10 inch",
-  "10+ Ft ask pricing",
-];
-
-const validScreenWidths = [
-  "4 ft 11 inch",
-  "6 ft 7 inch",
-  "8 ft 2 inch",
-  "9 ft 10 inch",
-  "11 ft 5 inch",
-  "13 ft 1 inch",
-  "14 ft 9 inch",
-  "16 ft 4 inch",
-  "19 ft 8 inch",
-];
-
 function calculateScreenPrice() {
   const screenHeight = document.querySelector("#screenHeight").value;
   const screenWidth = document.querySelector("#screenWidth").value;
-  const screenLinearFeet = document.querySelector("#screenLinearFeet").value;
-  const numberScreens = document.querySelector("#numberScreens").value;
+  const screenLinearFeet =
+    document.querySelector("#screenLinearFeet").value || 0;
+  const numberScreens = document.querySelector("#numberScreens").value || 0;
 
   let errors = [];
 
-  if (!validScreenHeights.includes(screenHeight)) {
+  if (!data.screenHeightOptions.includes(screenHeight)) {
     errors.push("⚠ Invalid Screen Height selected.");
   }
-  if (!validScreenWidths.includes(screenWidth)) {
+  if (!data.screenWidthOptions.includes(screenWidth)) {
     errors.push("⚠ Invalid Screen Width selected.");
   }
 
@@ -289,7 +266,7 @@ function calculateScreenPrice() {
     return;
   }
 
-  const basePrice = parseFloat(screenPrices[screenHeight][screenWidth]);
+  const basePrice = parseFloat(data.screenPrices[screenHeight][screenWidth]);
 
   const heightFeet = parseFloat(screenHeight.split(" ")[0]);
   const widthFeet = parseFloat(screenWidth.split(" ")[0]);
