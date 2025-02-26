@@ -164,8 +164,8 @@ function calculatePergolaPrice() {
 
   // LED Perimeter
   let perimeter =
-    (parseFloat(formData.pergolaLength || 0) +
-      parseFloat(formData.pergolaProjection || 0)) *
+    (parseFloat(formData.pergolaLength.value || 0) +
+      parseFloat(formData.pergolaProjection.value || 0)) *
     2;
   let ledCost = perimeter * 4.27;
   if (formData.pergolaLedPerimeter.value === "Yes") {
