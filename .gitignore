@@ -1,0 +1,36 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Dependencias de producción
+dist/
+build/
+
+# Archivos de configuración de IDE
+.vscode/
+.idea/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de OS
+.vscode/
+
+# JetBrains (IntelliJ, WebStorm, etc.)
+.idea/
+
+# macOS
+*.swp
+*~
+
+# Otros archivos que no deberían ser versionados
+.env
+*.env
