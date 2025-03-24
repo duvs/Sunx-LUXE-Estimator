@@ -222,7 +222,14 @@ function calculatePergolaPrice() {
 
   document.querySelector("#pergolaResult").style.display = "block";
 
-  formData = { ...formData, basePrice, installationFee, permitFee, totalPrice };
+  formData = {
+    ...formData,
+    adjustments,
+    basePrice,
+    installationFee,
+    permitFee,
+    totalPrice,
+  };
 }
 
 document

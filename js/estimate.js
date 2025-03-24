@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const breakdownList = document.querySelector("#breakdown-list");
   const estimateData = JSON.parse(localStorage.getItem("estimateData"));
 
   if (!estimateData) {
@@ -52,6 +53,16 @@ document.addEventListener("DOMContentLoaded", function () {
         <li>Supporting Columns: ${estimateData.pergolaColumns || 0}</li>
       </ul>
     `;
+  }
+
+  const breakDownData = estimateData["adjustments"] || [];
+  if (breakdownList) {
+    breakDownData.forEach((adjustment) => {
+      const li = document.createElement("li");
+      li.textContent = adjustment;
+
+      breakdownList.appendChild(li);
+    });
   }
 
   const downloadButton = document.querySelector("#downloadPdfBtn");

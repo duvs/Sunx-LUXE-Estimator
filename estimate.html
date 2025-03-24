@@ -36,16 +36,19 @@
           <h4>Pergola LUXE</h4>
           <p id="description"></p>
 
-          <p><strong>Cost Breakdown:</strong></p>
-          <ul>
-            <li>Base Price: $<span id="basePrice"></span></li>
-            <li>Installation Fee: $<span id="installationFee"></span></li>
-            <li>Permit Fee: $<span id="permitFee"></span></li>
-          </ul>
+          <div class="avoidBreak">
+            <p><strong>Cost Breakdown:</strong></p>
+            <ul id="breakdown-list">
+              <li>Base Price: $<span id="basePrice">0</span></li>
+              <!-- Aqui va el breakdown  -->
+            </ul>
 
-          <p>
-            <strong>Total Project Cost: </strong> $<span id="totalPrice"></span>
-          </p>
+            <p>
+              <strong>Total Project Cost: </strong> $<span
+                id="totalPrice"
+              ></span>
+            </p>
+          </div>
 
           <div class="illustrations">
             <img src="img/banner-luxe.webp" alt="LUXE Pergola" />
