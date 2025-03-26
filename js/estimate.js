@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   const breakdownList = document.querySelector("#breakdown-list");
+  const screenDetailsList = document.querySelector("#screenDetails-list");
   const estimateData = JSON.parse(localStorage.getItem("estimateData"));
+  const clientInfo = estimateData.clientInfo;
+  const formData = estimateData.formData;
+  const screenData = estimateData.screenData || {};
+  const projectPrice = estimateData.projectPrice || formData.totalPrice;
 
   if (!estimateData) {
     alert("No estimate data found. Please generate an estimate first.");
@@ -14,54 +19,69 @@ document.addEventListener("DOMContentLoaded", function () {
     if (element) element.textContent = value || "N/A";
   };
 
-  setTextContent("#clientName", estimateData.clientName);
-  setTextContent("#clientAddress", estimateData.clientAddress);
-  setTextContent("#clientPhone", estimateData.clientPhone);
-  setTextContent("#clientEmail", estimateData.clientEmail);
-  setTextContent("#basePrice", `${estimateData.basePrice.toFixed(2)}`);
-  setTextContent(
-    "#installationFee",
-    `${estimateData.installationFee.toFixed(2)}`
-  );
-  setTextContent("#permitFee", `${estimateData.permitFee.toFixed(2)}`);
-  setTextContent("#totalPrice", `${estimateData.totalPrice.toFixed(2)}`);
+  setTextContent("#clientName", clientInfo.clientName);
+  setTextContent("#clientAddress", clientInfo.clientAddress);
+  setTextContent("#clientPhone", clientInfo.clientPhone);
+  setTextContent("#clientEmail", clientInfo.clientEmail);
+  setTextContent("#basePrice", `${formData.basePrice.toFixed(2)}`);
+  setTextContent("#installationFee", `${formData.installationFee.toFixed(2)}`);
+  setTextContent("#permitFee", `${formData.permitFee.toFixed(2)}`);
+  setTextContent("#totalPrice", `${formData.totalPrice.toFixed(2)}`);
   setTextContent("#estimateDate", new Date().toLocaleDateString());
+  setTextContent("#projectPrice", `${projectPrice.toFixed(2)}`);
 
   const descriptionElement = document.querySelector("#description");
   if (descriptionElement) {
     descriptionElement.innerHTML = `
       <ul>
-        <li>Pergola Design ${estimateData.pergolaDesign.text}</li>
-        <li>Dimensions: ${estimateData.pergolaLength.text} (Length) x ${
-      estimateData.pergolaProjection.text
+        <li>Pergola Design ${formData.pergolaDesign.text}</li>
+        <li>Dimensions: ${formData.pergolaLength.text} (Length) x ${
+      formData.pergolaProjection.text
     } (Projection)</li>
-        <li>Height: ${estimateData.pergolaHeight.text}</li>
-        <li>Structure Color: ${estimateData.pergolaColor.text}</li>
-        <li>Mounting Type: ${estimateData.pergolaMounting.text}</li>
+        <li>Height: ${formData.pergolaHeight.text}</li>
+        <li>Structure Color: ${formData.pergolaColor.text}</li>
+        <li>Mounting Type: ${formData.pergolaMounting.text}</li>
         <li>LED Perimeter: ${
-          estimateData.pergolaLedPerimeter.value === "Yes"
+          formData.pergolaLedPerimeter.value === "Yes"
             ? "Included"
             : "Not included"
         }</li>
-        <li>Electric Heaters: ${estimateData.pergolaHeaters || 0}</li>
-        <li>Fan Beams: ${estimateData.pergolaFans || 0}</li>
+        <li>Electric Heaters: ${formData.pergolaHeaters || 0}</li>
+        <li>Fan Beams: ${formData.pergolaFans || 0}</li>
         <li>Permit Required: ${
-          estimateData.pergolaPermitRequired.value === "yes"
+          formData.pergolaPermitRequired.value === "Yes"
             ? "Yes, additional engineering and permitting fees apply."
             : "No, standard installation."
         }</li>
-        <li>Supporting Columns: ${estimateData.pergolaColumns || 0}</li>
+        <li>Supporting Footer: ${formData.pergolaFooter || 0}</li>
       </ul>
     `;
   }
 
-  const breakDownData = estimateData["adjustments"] || [];
-  if (breakdownList) {
+  const breakDownData = formData["adjustments"] || [];
+  if (breakdownList && Array.isArray(breakDownData)) {
     breakDownData.forEach((adjustment) => {
       const li = document.createElement("li");
       li.textContent = adjustment;
 
       breakdownList.appendChild(li);
+    });
+  }
+
+  const screenDetails = screenData.screenDetails || [];
+  if (
+    screenDetailsList &&
+    Array.isArray(screenDetails) &&
+    screenDetails.length > 0
+  ) {
+    setTextContent("#totalPriceScreen", screenData.totalPrice.toFixed(2));
+    document.querySelector("#pergolaCost").style.display = "block";
+    document.querySelector("#screenDetails").style.display = "block";
+    screenDetails.forEach((details) => {
+      const li = document.createElement("li");
+      li.textContent = details;
+
+      screenDetailsList.appendChild(li);
     });
   }
 
@@ -74,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      let clientName = estimateData.clientName.trim();
+      let clientName = clientInfo.clientName.trim();
 
       let nameParts = clientName.split(/\s+/);
       let shortName = nameParts.slice(0, 2).join("_");

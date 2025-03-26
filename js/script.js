@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 import data from "./data.js";
 
-let formData = {};
+let estimateData = {};
 
 const designSelect = document.querySelector("#pergolaDesign");
 const permitSelect = document.querySelector("#pergolaPermitRequired");
@@ -133,7 +133,7 @@ function updatePermitFee() {
 permitSelect.addEventListener("change", updatePermitFee);
 
 function calculatePergolaPrice() {
-  formData = getFormData();
+  let formData = getFormData();
   if (!formData) return;
 
   const priceKey = `${formData.pergolaDesign.value}-${formData.pergolaLength.value}-${formData.pergolaProjection.value}`;
@@ -230,6 +230,8 @@ function calculatePergolaPrice() {
     permitFee,
     totalPrice,
   };
+
+  estimateData.formData = formData;
 }
 
 document
@@ -287,14 +289,34 @@ function calculateScreenPrice() {
 
   const finalPricePerLinearFoot = totalPriceBeforeLinearFeet / widthFeet;
 
-  const finalPrice = finalPricePerLinearFoot * screenLinearFeet;
+  const totalPrice = finalPricePerLinearFoot * screenLinearFeet;
 
-  if (finalPrice) {
+  let screenHeightTxt = `Screen Height: ${screenHeight}`;
+  let totalLinearFeetTxt = `Total Linear Feet: ${screenLinearFeet}`;
+  let numberScreensTxt = `Number of Screens: ${numberScreens}`;
+  let totalSquaredFeetTxt = `Total Square Feet: ${totalSqFt.toFixed(0)}`;
+
+  if (totalPrice) {
     document.querySelector(
       "#screenResultText"
-    ).textContent = `Total Screen Price: ${finalPrice.toFixed(
-      2
-    )} (${screenHeight} x ${screenWidth})`;
+    ).innerHTML = `${totalSquaredFeetTxt}<br>
+    ${totalLinearFeetTxt}<br>
+    ${numberScreensTxt}<br>
+    Total Screen Cost: $${totalPrice.toFixed(2)}`;
+
+    let screenDetails = [
+      screenHeightTxt,
+      totalLinearFeetTxt,
+      numberScreensTxt,
+      totalSquaredFeetTxt,
+    ];
+
+    let screenData = {
+      screenDetails,
+      totalPrice,
+    };
+
+    estimateData.screenData = screenData;
   } else {
     document.querySelector("#screenResultText").textContent =
       "Please select valid dimensions for pricing";
@@ -361,13 +383,14 @@ function generateEstimate() {
 
   calculatePergolaPrice();
 
-  const estimateData = {
-    clientName,
-    clientAddress,
-    clientPhone,
-    clientEmail,
-    ...formData,
-  };
+  if (estimateData.screenData) {
+    estimateData.projectPrice =
+      estimateData.formData.totalPrice + estimateData.screenData.totalPrice;
+  }
+
+  let clientInfo = { clientName, clientAddress, clientPhone, clientEmail };
+
+  estimateData.clientInfo = clientInfo;
 
   localStorage.setItem("estimateData", JSON.stringify(estimateData));
 
